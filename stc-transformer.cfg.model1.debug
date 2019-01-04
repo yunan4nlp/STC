@@ -1,0 +1,67 @@
+[Data]
+data_dir = nlpcc2017
+
+train_files = %(data_dir)s/nlpcc2017.train.post.sample %(data_dir)s/nlpcc2017.train.response.sample
+dev_files = %(data_dir)s/nlpcc2017.dev.post.sample %(data_dir)s/nlpcc2017.dev.response.sample
+test_files = %(data_dir)s/nlpcc2017.test.post.sample %(data_dir)s/nlpcc2017.test.response.sample
+
+[Save]
+save_dir = STC-transformer-model1
+config_file = %(save_dir)s/config.cfg
+save_model_path = %(save_dir)s/model
+save_src_vocab_path = %(save_dir)s/src_vocab
+save_tgt_vocab_path = %(save_dir)s/tgt_vocab
+load_dir = STC-transformer-model1
+load_model_path = %(load_dir)s/model
+load_src_vocab_path = %(load_dir)s/src_vocab
+load_tgt_vocab_path = %(load_dir)s/tgt_vocab
+
+[Network]
+# DL4MT or Transformer
+model_name = Transformer
+src_vocab_size = 20000
+tgt_vocab_size = 20000
+num_layers = 6
+num_heads = 8
+embed_size = 512
+lstm_hidden_size = 1024
+hidden_size = 1024
+attention_size = 2048
+dropout_emb = 0.1
+dropout_lstm_input = 0.1
+dropout_lstm_hidden = 0.1
+dropout_hidden = 0.1
+param_init = 0.1
+proj_share_weight = False
+bridge_type = mlp
+label_smoothing = -1.0
+
+[Optimizer]
+learning_algorithm = adam
+learning_rate = 0.0005
+start_decay_at = 10
+decay_scale = 0.75
+decay_method = loss
+decay_steps = 50
+beta_1 = .9
+beta_2 = .98
+epsilon = 1e-12
+clip = 5.0
+max_patience = 5
+min_lrate = 0.00001
+
+[Run]
+train_iters = 50000
+train_batch_size = 128
+test_batch_size = 128
+validate_every = 50
+update_every = 1
+save_after = 1
+eval_start = 0
+decode_max_time_step = 150
+max_src_length = 25
+max_tgt_length = 25
+min_src_length = 6
+min_tgt_length = 6
+beam_size = 20
+bleu_script = ./multi-bleu.pl
